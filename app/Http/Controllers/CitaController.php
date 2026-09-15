@@ -4,19 +4,29 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Cita;
+use Illuminate\Support\Facades\DB;
 
 class CitaController extends Controller
 {
-    // Mostrar la vista del formulario
-    public function create()
+    // 1. Carga la vista del Dashboard enviándole las citas guardadas
+    public function index()
     {
-        return view('citas'); // Nombre de tu archivo citas.blade.php
+        $citas = Cita::all(); // Obtiene todas las citas de la BD
+        return view('dashboard', compact('citas')); // Retorna tu vista dashboard.blade.php
     }
 
-    // Guardar los datos del formulario en la BD
+    // 2. Muestra el formulario de agendamiento
+    public function create()
+    {
+        $pacientes = DB::table('paciente')->get();
+        $especialistas = DB::table('especialista')->get();
+
+        return view('citas', compact('pacientes', 'especialistas'));
+    }
+
+    // 3. Procesa el formulario, guarda en BD y REDIRIGE AL DASHBOARD
     public function store(Request $request)
     {
-        // Validar que los datos requeridos lleguen bien
         $request->validate([
             'fecha'           => 'required|date',
             'hora'            => 'required',
@@ -24,7 +34,6 @@ class CitaController extends Controller
             'id_especialista' => 'required|integer',
         ]);
 
-        // Insertar en la base de datos
         Cita::create([
             'fecha'           => $request->fecha,
             'hora'            => $request->hora,
@@ -33,6 +42,7 @@ class CitaController extends Controller
             'id_especialista' => $request->id_especialista,
         ]);
 
-        return redirect()->back()->with('success', '¡Cita registrada con éxito!');
+        // Redirige al dashboard ejecutando el método index()
+        return redirect()->route('citas.index')->with('success', '¡Cita registrada con éxito!');
     }
 }
