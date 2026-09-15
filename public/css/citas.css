@@ -1,0 +1,372 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+
+/* Fondo pagina */
+
+
+body{
+    background:white;
+    display:flex;
+}
+
+
+/* Barra lateral */
+
+
+.sidebar{
+    width:280px;
+    height:100vh;
+    background:#dfe7f5;
+    border-right:1px solid #e4e4e4;
+    position:fixed;
+}
+
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:15px;
+    padding:30px;
+}
+
+
+.logo img{
+    width:60px;
+}
+
+
+/* color letra */
+
+
+.logo h2{
+    color:#071b67;
+    font-size:30px;
+}
+
+
+.sidebar ul{
+    list-style:none;
+    margin-top:20px;
+    padding:0 20px;
+}
+ 
+
+.sidebar ul li a{
+    display:flex;
+    align-items:center;
+    gap:20px;
+    text-decoration:none;
+    color:#071b67;
+    padding:18px 20px;
+    border-radius:15px;
+    font-size:18px;
+    transition:0.3s;
+}
+
+
+.sidebar ul li{
+    list-style:none;
+    margin-bottom:10px;
+}
+
+
+.sidebar ul li i{
+    font-size:22px;
+}
+
+
+.sidebar ul li a:hover{
+    background:#3d43ff;
+    color:white;
+    transform:translateY(-5px);
+}
+
+
+.sidebar ul li a:hover i{
+    color:white;
+}
+
+
+.active a{
+    background:#3d43ff;
+    color:white;
+}
+
+
+.active a i{
+    color:white;
+}
+
+
+/* Cerrar sesión */
+
+
+.cerrar-sesion{
+    position:absolute;
+    bottom:40px;
+    left:40px;
+    display:flex;
+    align-items:center;
+    gap:20px;
+    cursor:pointer;
+    font-size:18px;
+    transition:.3s;
+}
+
+
+.cerrar-sesion:hover{
+    color:#2563ff;
+}
+
+
+/* Contenido */
+
+
+.contenido{
+    margin-left:300px;
+    width:100%;
+    padding:40px;
+}
+
+
+/* Encabezado */
+
+
+header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+
+.titulo h1{
+    color:#071b67;
+    font-size:40px;
+}
+
+
+/* subtitulo */
+
+
+.titulo p{
+    color:#59688d;
+    margin-top:5px;
+}
+
+
+.derecha{
+    display:flex;
+    align-items:center;
+    gap:25px;
+}
+
+
+/* Buscador */
+
+
+.busqueda{
+    background:#dfe7f5;
+    padding:15px 20px;
+    border-radius:15px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+
+.busqueda input{
+    border:none;
+    outline:none;
+    font-size:16px;
+}
+
+
+/* Campana */
+
+
+.notificaciones{
+    background:#dfe7f5;
+    width:55px;
+    height:55px;
+    border-radius:50%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    cursor:pointer;
+}
+
+
+.notificaciones i{
+    font-size:22px;
+}
+
+
+/* Perfil */
+
+
+.perfil{
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+
+.perfil i{
+    font-size:50px;
+    color:#2563ff;
+}
+
+
+.perfil h4{
+    color:#071b67;
+}
+
+
+.perfil p{
+    color:#59688d;
+    font-size:14px;
+}
+
+
+/* FORMULARIO */
+
+.formulario-cita{
+    margin-top:30px;
+    background:#f8f8f8;
+    border-radius:25px;
+    padding:25px 30px;
+    width:100%;
+}
+
+.encabezado-cita{
+    display:flex;
+    align-items:center;
+    margin-bottom:40px;
+}
+
+.encabezado-cita i{
+    color:#3d43ff;
+    font-size:30px;
+}
+
+.encabezado-cita h2{
+    color:#3d43ff;
+    margin-left:15px;
+    font-size:32px;
+}
+
+.linea{
+    flex:1;
+    height:4px;
+    background:#d9dde5;
+    margin-left:30px;
+}
+
+/* DOS COLUMNAS */
+
+.contenedor-campos{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:20px 25px;
+}
+
+.campo{
+    width:100%;
+}
+
+.ancho-completo{
+    grid-column:1/3;
+}
+
+.campo label{
+    display:block;
+    font-size:17px;
+    font-weight:bold;
+    margin-bottom:12px;
+}
+
+.campo span{
+    color:red;
+}
+
+/* INPUTS */
+
+.input-icono{
+    height:55px;
+    border:1px solid #c8cfdb;
+    border-radius:15px;
+    display:flex;
+    align-items:center;
+    background:white;
+}
+
+.input-icono i{
+    width:70px;
+    text-align:center;
+    font-size:28px;
+    color:#8395b1;
+}
+
+.input-icono select,
+.input-icono input{
+    flex:1;
+    height:100%;
+    border:none;
+    outline:none;
+    background:white;
+    font-size:16px;
+    color:#7186a8;
+}
+
+/* TEXTAREA */
+
+.campo textarea{
+    width:100%;
+    height:90px;
+    border:1px solid #c8cfdb;
+    border-radius:15px;
+    padding:20px;
+    font-size:18px;
+    resize:none;
+}
+
+small{
+    display:flex;
+    justify-content:flex-end;
+    margin-top:10px;
+    color:#8395b1;
+}
+
+/* BOTONES */
+
+.botones{
+    display:flex;
+    justify-content:flex-end;
+    gap:20px;
+    margin-top:35px;
+}
+
+.btn-cancelar{
+    width:180px;
+    height:50px;
+    border:2px solid #3d43ff;
+    background:white;
+    color:#3d43ff;
+    border-radius:20px;
+    font-size:20px;
+}
+
+.btn-agendar{
+    width:200px;
+    height:50px;
+    border:none;
+    border-radius:20px;
+    background:linear-gradient(to right,#4f54ff,#291cff);
+    color:white;
+    font-size:20px;
+}

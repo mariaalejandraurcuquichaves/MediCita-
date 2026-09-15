@@ -1,0 +1,164 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI', sans-serif;
+}
+
+body{
+    background: #fff;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+    padding:20px;
+}
+
+.container{
+    width:100%;
+    max-width:900px;
+    background:#dfe7f5;
+    padding:35px;
+    border-radius:15px;
+    box-shadow:0 5px 20px rgba(0,0,0,.1);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    justify-content: center;
+}
+
+.logo img {
+    width: 120px; 
+}
+
+.logo-text h1 {
+    margin: 0;
+}
+
+.logo-text p {
+    margin: 0;
+}
+
+h2{
+    display: flex;
+    color:#2563eb;
+    margin:25px 0 15px;
+    align-items: center;
+    border-bottom:2px solid #e5e7eb;
+    padding-bottom:8px;
+    gap: 8px;
+}
+.h2  i{
+    color: #2563eb;
+    font-size: 20px;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:15px;
+}
+
+.input-group{
+    display:flex;
+    flex-direction:column;
+}
+
+.full-width{
+    grid-column:1/-1;
+}
+
+label{
+    margin-bottom:6px;
+    font-weight:600;
+    color:#333;
+}
+
+input,
+select{
+    padding:12px;
+    border:1px solid #d1d5db;
+    border-radius:8px;
+    outline:none;
+    transition:.3s;
+}
+
+input:focus,
+select:focus{
+    border-color:#2563eb;
+}
+
+.checkbox{
+    margin:20px 0;
+    display:flex;
+    align-items:center;
+    justify-content: center;
+    gap:10px;
+}
+.checkbox a{
+    color:#2563eb;
+}
+
+.checkbox a:hover {
+    text-decoration: underline;
+}
+
+button{
+    width:100%;
+    background:#2563eb;
+    color:white;
+    border:none;
+    padding:14px;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:16px;
+    font-weight:bold;
+    transition:.3s;
+}
+
+button:hover{
+    background:#1d4ed8;
+}
+
+.login{
+    text-align:center;
+    margin-top:20px;
+}
+
+.login a{
+    color:#2563eb;
+    text-decoration:none;
+    font-weight:bold;
+}
+
+/* gris claro */
+
+.icon i{
+    color: #b3b3b3; 
+    font-size: 18px;
+}
+.input-icon{
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-icon i{
+    position: absolute;
+    left: 15px;
+    color: #2563eb;
+    font-size: 16px;
+    pointer-events: none;
+}
+
+.input-icon input,
+.input-icon select{
+    width: 100%;
+    padding: 12px 12px 12px 45px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    box-sizing: border-box;
+}
