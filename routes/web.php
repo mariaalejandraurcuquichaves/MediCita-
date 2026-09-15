@@ -1,6 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CitaController;
+
+Route::get('/citas', [CitaController::class, 'create'])->name('citas.create');
+Route::post('/citas', [CitaController::class, 'store'])->name('citas.store');
 
 Route::get('/', function () {
     return view('index');
