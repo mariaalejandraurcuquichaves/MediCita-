@@ -25,23 +25,20 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('/logout', [AuthController::class, 'logout']);
 
-    //-- Roles
-    Route::get('/roles', [RolController::class, 'index']);
+// Solo Administrador (rol 1)
+
+Route::middleware('rol:1')->group(function () {
     Route::post('/roles', [RolController::class, 'store']);
     Route::put('/roles/{id}', [RolController::class, 'update']);
     Route::delete('/roles/{id}', [RolController::class, 'destroy']);
-
-    //-- Especialidades
-
-    Route::get('/especialidades', [EspecialidadController::class, 'index']);
-
     Route::post('/especialidades', [EspecialidadController::class, 'store']);
+    Route::post('/medicos', [MedicoController::class, 'store']);
+    });
 
-    //-- Medicos
-
-    Route::get('/medicos', [MedicoController::class, 'index']);
-
-    Route::post('/medicos', [MedicoController::class, 'store']);   
+    // Cualquier usuario con token (leer)
+    Route::get('/roles', [RolController::class, 'index']);
+    Route::get('/especialidades', [EspecialidadController::class, 'index']);
+    Route::get('/medicos', [MedicoController::class, 'index']); 
     
     
     //-- Citas
