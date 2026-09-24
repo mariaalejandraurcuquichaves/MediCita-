@@ -19,6 +19,14 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 });
 
+Route::get('/dashboard_medico', function () {
+    return view('dashboard_medico');
+});
+
+Route::get('/dashboard_paciente', function () {
+    return view('dashboard_paciente');
+});
+
 Route::get('/citas', function () {
     return view('citas');
 });

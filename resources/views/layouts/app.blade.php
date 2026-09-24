@@ -80,7 +80,7 @@
             </li>
         </ul>
 
-        <div class="cerrar-sesion">
+        <div class="cerrar-sesion" id="btnLogout" style="cursor:pointer;">
             <i class="fa-solid fa-right-from-bracket"></i>
             <span>Cerrar sesión</span>
         </div>
@@ -96,5 +96,27 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>    
 
+
+        <script>
+        document.getElementById('btnLogout').addEventListener('click', async function () {
+            const token = localStorage.getItem('token');
+
+            try {
+                await fetch('/api/logout', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Authorization': 'Bearer ' + token
+                    }
+                });
+            } catch (error) {
+              
+            }
+
+            localStorage.removeItem('token');
+            localStorage.removeItem('id_rol');
+            window.location.href = '/login';
+        });
+    </script>
 </body>
 </html>

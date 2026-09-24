@@ -179,7 +179,20 @@ document.getElementById('loginForm').addEventListener('submit', async function (
         if (respuesta.ok) {
             localStorage.setItem('token', resultado.token);
             localStorage.setItem('id_rol', resultado.id_rol);
-            window.location.href = '/dashboard';
+            
+        const rol = Number(resultado.id_rol);
+
+            if (rol === 1) {
+                window.location.href = '/dashboard';
+                } else if (rol === 2) {
+                window.location.href = '/dashboard_medico';
+                } else if (rol === 3) {
+                window.location.href = '/dashboard_paciente';
+                } else {
+                mensajeLogin.style.color = 'red';
+                mensajeLogin.textContent = 'Rol no reconocido.';
+                }       
+
         } else {
             mensajeLogin.style.color = 'red';
             mensajeLogin.textContent = resultado.message;
