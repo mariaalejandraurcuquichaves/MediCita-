@@ -2,47 +2,45 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Cita;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 
 class CitaController extends Controller
 {
-    // 1. Carga la vista del Dashboard enviándole las citas guardadas
-    public function index()
+     public function index()
     {
-        $citas = Cita::all(); // Obtiene todas las citas de la BD
-        return view('dashboard', compact('citas')); // Retorna tu vista dashboard.blade.php
+        return Cita::with(['paciente.persona', 'medico.persona', 'medico.especialidad'])->get();
     }
 
-    // 2. Muestra el formulario de agendamiento
-    public function create()
-    {
-        $pacientes = DB::table('paciente')->get();
-        $especialistas = DB::table('especialista')->get();
-
-        return view('citas', compact('pacientes', 'especialistas'));
-    }
-
-    // 3. Procesa el formulario, guarda en BD y REDIRIGE AL DASHBOARD
-    public function store(Request $request)
+     public function store(Request $request)
     {
         $request->validate([
-            'fecha'           => 'required|date',
-            'hora'            => 'required',
-            'id_paciente'     => 'required|integer',
-            'id_especialista' => 'required|integer',
+            'fecha' => 'required|date|after_or_equal:today',
+            'hora' => 'required|date_format:H:i',
+            'motivo' => 'required|string|max:255',
+            'id_paciente' => 'required|exists:pacientes,id',
+            'id_medico' => 'required|exists:medicos,id',
         ]);
 
-        Cita::create([
-            'fecha'           => $request->fecha,
-            'hora'            => $request->hora,
-            'estado'          => $request->estado ?? 'pendiente',
-            'id_paciente'     => $request->id_paciente,
-            'id_especialista' => $request->id_especialista,
+        $ocupada = Cita::where('id_medico', $request->id_medico)
+            ->where('fecha', $request->fecha)
+            ->where('hora', $request->hora)
+            ->exists();
+
+        if ($ocupada) {
+            return response()->json([
+                'message' => 'Ese médico ya tiene una cita a esa fecha y hora.'
+            ], 422);
+        }
+
+        $cita = Cita::create([
+            'fecha' => $request->fecha,
+            'hora' => $request->hora,
+            'motivo' => $request->motivo,
+            'id_paciente' => $request->id_paciente,
+            'id_medico' => $request->id_medico,
         ]);
 
-        // Redirige al dashboard ejecutando el método index()
-        return redirect()->route('citas.index')->with('success', '¡Cita registrada con éxito!');
+        return response()->json($cita, 201);
     }
 }

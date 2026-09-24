@@ -25,7 +25,7 @@
 
 <h2><i class="fa-solid fa-user"></i> Información Personal</h2>
 
-<form>
+<form id="formRegistro">
 
 <div class="grid">
 
@@ -33,7 +33,7 @@
         <label>Nombre completo</label>
         <div class="input-icon">
             <i class="fa-solid fa-user"></i>
-            <input type="text" placeholder="Ej. Juan Pérez García">
+            <input type="text" id="nombre" placeholder="Ej. Juan Pérez García">
         </div>
     </div>
 
@@ -41,10 +41,10 @@
         <label>Tipo de documento</label>
         <div class="input-icon">
             <i class="fa-solid fa-id-card"></i>
-            <select>
-                <option>Cédula de ciudadanía</option>
-                <option>Tarjeta de identidad</option>
-                <option>Cédula extranjera</option>
+            <select id="tipo_documento">
+                <option value="CC">Cédula de ciudadanía</option>
+                <option value="TI">Tarjeta de identidad</option>
+                <option value="CE">Cédula extranjera</option>
             </select>
         </div>
     </div>
@@ -53,7 +53,7 @@
         <label>Número de documento</label>
         <div class="input-icon">
             <i class="fa-solid fa-address-card"></i>
-            <input type="text" placeholder="1234567890">
+            <input type="text" id="numero_documento" placeholder="1234567890">
         </div>
     </div>
 
@@ -61,7 +61,7 @@
         <label>Fecha de nacimiento</label>
         <div class="input-icon">
             <i class="fa-solid fa-calendar-days"></i>
-            <input type="date">
+            <input type="date" id="fecha_nacimiento">
         </div>
     </div>
 
@@ -69,11 +69,11 @@
         <label>Género</label>
         <div class="input-icon">
             <i class="fa-solid fa-venus-mars"></i>
-            <select name="genero" id="genero">
-                <option>Selecciona tu género</option>
-                <option>Masculino</option>
-                <option>Femenino</option>
-                <option>No binario</option>
+            <select id="genero">
+                <option value="">Selecciona tu género</option>
+                <option value="Masculino">Masculino</option>
+                <option value="Femenino">Femenino</option>
+                <option value="No binario">No binario</option>
             </select>
         </div>
     </div>
@@ -89,7 +89,7 @@
         <label>Correo electrónico</label>
         <div class="input-icon">
             <i class="fa-solid fa-envelope"></i>
-            <input type="email" placeholder="Ej. correo@ejemplo.com">
+            <input type="email" id="correo" placeholder="Ej. correo@ejemplo.com">
         </div>
     </div>
 
@@ -97,15 +97,15 @@
         <label>Número de celular</label>
         <div class="input-icon">
             <i class="fa-solid fa-phone"></i>
-            <input type="tel" placeholder="Ej. 3001234567">
+            <input type="tel" id="celular" placeholder="Ej. 3001234567">
         </div>
     </div>
 
     <div class="input-group full-width">
-        <label>Dirección (Opcional)</label>
+        <label>Dirección</label>
         <div class="input-icon">
             <i class="fa-solid fa-location-dot"></i>
-            <input type="text" placeholder="Ej. Calle 123 #45-67">
+            <input type="text" id="direccion" placeholder="Ej. Calle 123 #45-67">
         </div>
     </div>
 
@@ -120,7 +120,7 @@
         <label>Nombre de usuario</label>
         <div class="input-icon">
             <i class="fa-solid fa-user-tag"></i>
-            <input type="text" placeholder="juanperez">
+            <input type="text" id="nombre_usuario" placeholder="juanperez">
         </div>
     </div>
 
@@ -128,7 +128,7 @@
         <label>Contraseña</label>
         <div class="input-icon">
             <i class="fa-solid fa-lock"></i>
-            <input type="password" placeholder="Crea una contraseña">
+            <input type="password" id="password" placeholder="Crea una contraseña">
         </div>
     </div>
 
@@ -136,7 +136,7 @@
         <label>Confirmar contraseña</label>
         <div class="input-icon">
             <i class="fa-solid fa-shield-halved"></i>
-            <input type="password" placeholder="Confirma tu contraseña">
+            <input type="password" id="password2" placeholder="Confirma tu contraseña">
         </div>
     </div>
 
@@ -150,6 +150,9 @@
                 <a href="#">Política de Privacidad</a>
             </label>
         </div>
+
+        <p id="mensaje"></p>
+
         <button type="submit">Registrarme</button>
 
         <p class="login">
@@ -160,6 +163,70 @@
     </form>
 
 </div>
+
+<script>
+document.getElementById('formRegistro').addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    const mensaje = document.getElementById('mensaje');
+    mensaje.textContent = '';
+
+    if (!document.getElementById('terminos').checked) {
+        mensaje.textContent = 'Debes aceptar los términos y condiciones.';
+        return;
+    }
+
+    if (document.getElementById('password').value !== document.getElementById('password2').value) {
+        mensaje.textContent = 'Las contraseñas no coinciden.';
+        return;
+    }
+
+    const datos = {
+        nombre: document.getElementById('nombre').value,
+        tipo_documento: document.getElementById('tipo_documento').value,
+        numero_documento: document.getElementById('numero_documento').value,
+        fecha_nacimiento: document.getElementById('fecha_nacimiento').value,
+        genero: document.getElementById('genero').value,
+        correo: document.getElementById('correo').value,
+        celular: document.getElementById('celular').value,
+        direccion: document.getElementById('direccion').value,
+        nombre_usuario: document.getElementById('nombre_usuario').value,
+        password: document.getElementById('password').value
+    };
+
+    try {
+        const respuesta = await fetch('/api/pacientes', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify(datos)
+        });
+
+        const resultado = await respuesta.json();
+
+        if (respuesta.ok) {
+            mensaje.style.color = 'green';
+            mensaje.textContent = '¡Registro exitoso! Redirigiendo al login...';
+            setTimeout(() => window.location.href = '/login', 2000);
+        } else {
+            mensaje.style.color = 'red';
+            const errores = resultado.errors ? Object.values(resultado.errors).flat().join(' ') : resultado.message;
+            mensaje.textContent = errores;
+        }
+    } catch (error) {
+        mensaje.style.color = 'red';
+        mensaje.textContent = 'No se pudo conectar con el servidor.';
+    }
+});
+</script>
+
+
+
+
+
+
 
 </body>
 </html>

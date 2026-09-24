@@ -1,14 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\CitaController;
 
-// Rutas del Módulo Citas y Dashboard
-Route::get('/citas', [CitaController::class, 'create'])->name('citas.create');       // Formulario
-Route::post('/citas', [CitaController::class, 'store'])->name('citas.store');        // Guardar cita
-Route::get('/dashboard', [CitaController::class, 'index'])->name('citas.index');     // Dashboard con la lista de citas
 
-// Vistas estáticas
 Route::get('/', function () {
     return view('index');
 });
@@ -19,6 +13,14 @@ Route::get('/login', function (){
 
 Route::get('/registro', function () {
     return view('registro');
+});
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+});
+
+Route::get('/citas', function () {
+    return view('citas');
 });
 
 Route::get('/usuarios', function () {
@@ -44,3 +46,4 @@ Route::get('/historia_clinica', function () {
 Route::get('/configuracion', function () {
     return view('configuracion');
 });
+
