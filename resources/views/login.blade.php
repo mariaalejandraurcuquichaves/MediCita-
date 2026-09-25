@@ -82,10 +82,10 @@
             <form id="loginForm">
 
        
-                <label>Correo electrónico</label>
+                <label>Nombre de usuario</label>
                 <div class="input-group">
-                    <i class="fa-regular fa-envelope"></i>
-                    <input type="email" placeholder="ejemplo@correo.com">
+                    <i class="fa-regular fa-user"></i>
+                    <input type="text" id="nombre_usuario" placeholder="Ingresa tu usuario">
                 </div>
 
 
@@ -96,7 +96,7 @@
                     <i class="fa-regular fa-eye" id="ojo"></i>
                 </div>
 
-                <small id="mensajePassword"></small>
+                <p id="mensajeLogin"></p>
 
 
                 <a href="#" class="forgot-password">
@@ -138,7 +138,7 @@
            <script>
             const ojo = document.getElementById("ojo");
             const password = document.getElementById("password");
-            const mensaje = document.getElementById("mensajePassword");
+          
 
 
             ojo.addEventListener("click", function () {
@@ -154,55 +154,56 @@
 
 });
 
-// Validación
-password.addEventListener("input", function () {
 
-    const pass = password.value;
-
-    if (pass === "") {
-        mensaje.textContent = "";
-    }
-    else if (pass.length < 8) {
-        mensaje.textContent = "Debe tener mínimo 8 caracteres.";
-    }
-    else if (!/[A-Z]/.test(pass)) {
-        mensaje.textContent = "Debe contener una letra mayúscula.";
-    }
-    else if (!/[a-z]/.test(pass)) {
-        mensaje.textContent = "Debe contener una letra minúscula.";
-    }
-    else if (!/\d/.test(pass)) {
-        mensaje.textContent = "Debe contener un número.";
-    }
-    else if (!/[.!@#$%^&*(),?":{}|<>]/.test(pass)) {
-        mensaje.textContent = "Debe contener un signo especial o punto.";
-    }
-    else {
-        mensaje.style.color = "green";
-        mensaje.textContent = "✓ Contraseña válida";
-    }
-});
-
-document.getElementById("loginForm").addEventListener("submit", function(e) {
-
+document.getElementById('loginForm').addEventListener('submit', async function (e) {
     e.preventDefault();
 
-    const pass = password.value;
+    const mensajeLogin = document.getElementById('mensajeLogin');
+    mensajeLogin.textContent = '';
 
-    const valida =
-        pass.length >= 8 &&
-        /[A-Z]/.test(pass) &&
-        /[a-z]/.test(pass) &&
-        /\d/.test(pass) &&
-        /[.!@#$%^&*(),?":{}|<>]/.test(pass);
+    try {
+        const respuesta = await fetch('/api/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+                nombre_usuario: document.getElementById('nombre_usuario').value,
+                password: document.getElementById('password').value
+            })
+        });
 
-    if (valida) {
-        window.location.href = "/dashboard";
-    } else {
-        alert("La contraseña no cumple los requisitos.");
+        const resultado = await respuesta.json();
+
+        if (respuesta.ok) {
+            localStorage.setItem('token', resultado.token);
+            localStorage.setItem('id_rol', resultado.id_rol);
+            
+        const rol = Number(resultado.id_rol);
+
+            if (rol === 1) {
+                window.location.href = '/dashboard';
+                } else if (rol === 2) {
+                window.location.href = '/dashboard_medico';
+                } else if (rol === 3) {
+                window.location.href = '/dashboard_paciente';
+                } else {
+                mensajeLogin.style.color = 'red';
+                mensajeLogin.textContent = 'Rol no reconocido.';
+                }       
+
+        } else {
+            mensajeLogin.style.color = 'red';
+            mensajeLogin.textContent = resultado.message;
+        }
+    } catch (error) {
+        mensajeLogin.style.color = 'red';
+        mensajeLogin.textContent = 'No se pudo conectar con el servidor.';
     }
-
 });
+
+
 
 </script>
 

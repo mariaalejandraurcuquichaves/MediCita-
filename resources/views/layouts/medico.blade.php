@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MediCita - Panel</title>
+    <title>MediCita - Panel Médico</title>
 
-       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
 
-        <link rel="stylesheet"
+    <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-        @yield('css')
+    @yield('css')
 
 </head>
 <body>
@@ -24,56 +24,35 @@
 
         <ul>
             <li>
-                <a href="/dashboard">
+                <a href="/dashboard_medico">
                 <i class="fa-solid fa-house"></i>
                 <span>Inicio</span>
                 </a>
             </li>
 
             <li>
-                <a href="/citas">
+                <a href="/citas_medico">
                 <i class="fa-regular fa-calendar"></i>
-                <span>Citas</span>
+                <span>Mis Citas</span>
                 </a>
             </li>
 
             <li>
-                <a href="/usuarios">
-                <i class="fa-solid fa-users"></i>
-                <span>Usuarios</span>
-                </a>
-            </li>
-
-            <li>
-                <a href="/pacientes">
+                <a href="/pacientes_medico">
                 <i class="fa-solid fa-user"></i>
-                <span>Pacientes</span>
+                <span>Mis Pacientes</span>
                 </a>
             </li>
 
             <li>
-                <a href="/especialistas">
-                <i class="fa-solid fa-stethoscope"></i>
-                <span>Especialistas</span>
-                </a>
-            </li>
-
-            <li>
-                <a href="/especialidades">
-                <i class="fa-solid fa-table-cells-large"></i>
-                <span>Especialidades</span>
-                </a>
-            </li>
-
-            <li>
-                <a href="/historia_clinica">
+                <a href="/historia_clinica_medico">
                 <i class="fa-solid fa-file-medical"></i>
                 <span>Historia clínica</span>
                 </a>
             </li>
 
             <li>
-                <a href="/configuracion">
+                <a href="/configuracion_medico">
                 <i class="fa-solid fa-gear"></i>
                 <span>Configuración</span>
                 </a>
@@ -94,10 +73,10 @@
     </main>
 
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 
-        <script>
+    <script>
         document.getElementById('btnLogout').addEventListener('click', async function () {
             const token = localStorage.getItem('token');
 
@@ -110,7 +89,7 @@
                     }
                 });
             } catch (error) {
-              
+
             }
 
             localStorage.removeItem('token');
