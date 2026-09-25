@@ -39,6 +39,8 @@ Route::middleware('rol:1')->group(function () {
     Route::get('/roles', [RolController::class, 'index']);
     Route::get('/especialidades', [EspecialidadController::class, 'index']);
     Route::get('/medicos', [MedicoController::class, 'index']); 
+
+    Route::get('/pacientes', [PacienteController::class, 'index']);
     
     
     //-- Citas

@@ -11,6 +11,12 @@ use Illuminate\Support\Facades\Hash;
 
 class PacienteController extends Controller
 {
+
+    public function index()
+    {
+        return Paciente::with('persona')->get();
+    }
+
      public function store(Request $request)
     {
         $request->validate([

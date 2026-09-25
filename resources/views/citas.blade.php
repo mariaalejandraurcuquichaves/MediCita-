@@ -63,13 +63,8 @@
             <div class="input-icono">
                 <i class="fa-regular fa-user"></i>
 
-            <select>
+            <select id="paciente">
                 <option selected disabled>Seleccionar paciente</option>
-                <option>Juan Pérez</option>
-                <option>María Gómez</option>
-                <option>Ana Rodríguez</option>
-                <option>Carlos Sánchez</option>
-                <option>Laura Martínez</option>
             </select>
             </div>
 
@@ -82,13 +77,9 @@
             <div class="input-icono">
                 <i class="fa-regular fa-user"></i>
 
-            <select>
-                <option selected disabled>Seleccionar especialista</option>
-                <option>Dr. Andrés Ruiz</option>
-                <option>Dra. Laura Torres</option>
-                <option>Dr. Carlos López</option>
-                <option>Dra. Camila Pérez</option>
-                <option>Dr. Felipe González</option>
+            <select id="especialista" disabled>
+                <option value="" selected disabled>Primero Seleccionar especialidad</option>
+               
             </select>
             </div>
 
@@ -101,7 +92,7 @@
             <div class="input-icono">
                 <i class="fa-regular fa-calendar"></i>
 
-                <input type="date">
+                <input type="date" id="fecha">
             </div>
 
         </div>
@@ -113,7 +104,7 @@
             <div class="input-icono">
                 <i class="fa-regular fa-clock"></i>
 
-                <input type="time">
+                <input type="time" id="hora">
             </div>
 
         </div>
@@ -125,34 +116,25 @@
             <div class="input-icono">
                 <i class="fa-solid fa-table-cells-large"></i>
 
-                <select>
-                <option selected disabled>Seleccionar especialidad</option>
-                <option>Medicina General</option>
-                <option>Pediatría</option>
-                <option>Cardiología</option>
-                <option>Dermatología</option>
-                <option>Neurología</option>
-                <option>Ginecología</option>
-                <option>Oftalmología</option>
-                <option>Ortopedia</option>
+                <select id="especialidad">
+                <option value="" selected disabled>Seleccionar especialidad</option>
+                
             </select>
             </div>
 
         </div>
 
-
         <div class="campo ancho-completo">
-
             <label>Motivo de la consulta<span>*</span></label>
-
             <textarea
-            id="motivo"
-            placeholder="Escribe el motivo de la consulta..."
-            maxlength="200"></textarea>
-
+                id="motivo"
+                placeholder="Escribe el motivo de la consulta..."
+                maxlength="200"></textarea>
             <small id="contador">0/200</small>
-
         </div>
+
+
+    
 
     </div>
 
@@ -163,7 +145,7 @@
             Cancelar
         </button>
 
-        <button class="btn-agendar">
+        <button type="button" class="btn-agendar" id="btnAgendar">
             Agendar cita
         </button>
 
@@ -171,20 +153,110 @@
 
     </form>
 
-        <script>
+    <script>
+        const token = localStorage.getItem('token');
 
-        const motivo = document.getElementById("motivo");
-        const contador = document.getElementById("contador");
+        async function pedirJSON(url) {
+        const respuesta = await fetch(url, {
+        headers: {
+            'Accept': 'application/json',
+            'Authorization': 'Bearer ' + token
+        }
+    });
+    return respuesta.json();
+        }
 
-        motivo.addEventListener("input", function(){
+        //  Cargar pacientes al abrir la página
+    async function cargarPacientes() {
+        const pacientes = await pedirJSON('/api/pacientes');
+        const select = document.getElementById('paciente');
 
-        let cantidad = motivo.value.length;
+    pacientes.forEach(function (paciente) {
+        const opcion = document.createElement('option');
+        opcion.value = paciente.id;
+        opcion.textContent = paciente.persona.nombre;
+        select.appendChild(opcion);
+    });
+        }
 
-        contador.textContent = cantidad + "/200";
+        // 2. Cargar especialidades al abrir la página
+    async function cargarEspecialidades() {
+        const especialidades = await pedirJSON('/api/especialidades');
+        const select = document.getElementById('especialidad');
 
-});
+    especialidades.forEach(function (especialidad) {
+        const opcion = document.createElement('option');
+        opcion.value = especialidad.id;
+        opcion.textContent = especialidad.nombre;
+        select.appendChild(opcion);
+    });
+        }
 
+        //  Cuando cambia la especialidad, cargar solo esos médicos
+    document.getElementById('especialidad').addEventListener('change', async function () {
+        const idEspecialidad = this.value;
+        const selectEspecialista = document.getElementById('especialista');
+
+    selectEspecialista.innerHTML = '<option value="" selected disabled>Cargando...</option>';
+    selectEspecialista.disabled = true;
+
+    const medicos = await pedirJSON('/api/medicos?id_especialidad=' + idEspecialidad);
+
+    selectEspecialista.innerHTML = '<option value="" selected disabled>Seleccionar especialista</option>';
+
+    medicos.forEach(function (medico) {
+        const opcion = document.createElement('option');
+        opcion.value = medico.id;
+        opcion.textContent = medico.persona.nombre;
+        selectEspecialista.appendChild(opcion);
+    });
+
+    selectEspecialista.disabled = false;
+        });
+
+    //  Enviar el formulario
+    document.getElementById('btnAgendar').addEventListener('click', async function () {
+    const datos = {
+        id_paciente: document.getElementById('paciente').value,
+        id_medico: document.getElementById('especialista').value,
+        fecha: document.getElementById('fecha').value,
+        hora: document.getElementById('hora').value,
+        motivo: document.getElementById('motivo').value
+    };
+
+    const respuesta = await fetch('/api/citas', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': 'Bearer ' + token
+        },
+        body: JSON.stringify(datos)
+    });
+
+    const resultado = await respuesta.json();
+
+    if (respuesta.ok) {
+        alert('Cita agendada correctamente.');
+        window.location.reload();
+    } else {
+        alert(resultado.message || 'Revisa los datos del formulario.');
+    }
+        });
+
+    // Contador de caracteres
+    const motivo = document.getElementById("motivo");
+    const contador = document.getElementById("contador");
+    motivo.addEventListener("input", function () {
+    contador.textContent = motivo.value.length + "/200";
+        });
+
+    // Al cargar la página
+    cargarPacientes();
+    cargarEspecialidades();
 </script>
+
+
 
 </section>
 

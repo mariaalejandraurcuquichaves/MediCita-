@@ -12,9 +12,15 @@ use Illuminate\Http\Request;
 
 class MedicoController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return Medico::with('especialidad', 'persona')->get();
+        $consulta = Medico::with('especialidad', 'persona');
+
+        if ($request->has('id_especialidad')) {
+            $consulta->where('id_especialidad', $request->id_especialidad);
+        }
+
+        return $consulta->get();
     }
 
     public function store(Request $request)
