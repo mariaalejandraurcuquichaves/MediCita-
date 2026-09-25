@@ -20,126 +20,110 @@ Route::get('/dashboard', function () {
 });
 
 Route::get('/dashboard_medico', function () {
-    return view('dashboard_medico');
-});
 
-Route::get('/dashboard_paciente', function () {
-    return view('dashboard_paciente');
-});
+    $citasHoy = 6;
+    $atendidosHoy = 3;
+    $pendientesHoy = 3;
+    $misPacientes = 42;
 
-Route::get('/citas_paciente', function () {
+    return view('dashboard_medico', [
+        'citasHoy' => $citasHoy,
+        'atendidosHoy' => $atendidosHoy,
+        'pendientesHoy' => $pendientesHoy,
+        'misPacientes' => $misPacientes,
+    ]);
+});
+Route::get('/citas_medico', function () {
 
     $citas = [
         [
             'id' => 1,
-            'especialista' => 'Dr. Carlos Ramírez',
-            'especialidad' => 'Cardiología',
-            'fecha' => '2026-10-02',
+            'paciente' => 'Juan Pérez',
+            'motivo' => 'Control de presión arterial',
+            'fecha' => '2026-09-25',
             'hora' => '09:00',
             'estado' => 'confirmada',
         ],
         [
             'id' => 2,
-            'especialista' => 'Dra. Laura Gómez',
-            'especialidad' => 'Dermatología',
-            'fecha' => '2026-10-15',
-            'hora' => '14:30',
+            'paciente' => 'María Fernanda López',
+            'motivo' => 'Dolor en el pecho',
+            'fecha' => '2026-09-25',
+            'hora' => '10:30',
             'estado' => 'pendiente',
         ],
         [
             'id' => 3,
-            'especialista' => 'Dr. Andrés Torres',
-            'especialidad' => 'Odontología',
-            'fecha' => '2026-09-10',
-            'hora' => '11:00',
+            'paciente' => 'Carlos Andrés Ruiz',
+            'motivo' => 'Chequeo general',
+            'fecha' => '2026-09-24',
+            'hora' => '15:00',
             'estado' => 'realizada',
         ],
     ];
 
-    return view('citas_paciente', ['citas' => $citas]);
+    return view('citas_medico', ['citas' => $citas]);
 });
 
-Route::get('/buscar_especialista', function () {
+Route::get('/pacientes_medico', function () {
 
-    $especialistas = [
+    $pacientes = [
         [
             'id' => 1,
-            'nombre' => 'Dr. Carlos Ramírez',
-            'especialidad' => 'Cardiología',
-            'horario' => 'Lunes a Viernes, 8:00 am - 12:00 pm',
+            'nombre' => 'Juan Pérez',
+            'documento' => '1098765432',
+            'edad' => 34,
+            'ultima_cita' => '2026-09-25',
         ],
         [
             'id' => 2,
-            'nombre' => 'Dra. Laura Gómez',
-            'especialidad' => 'Dermatología',
-            'horario' => 'Martes y Jueves, 2:00 pm - 6:00 pm',
+            'nombre' => 'María Fernanda López',
+            'documento' => '1045678901',
+            'edad' => 27,
+            'ultima_cita' => '2026-09-25',
         ],
         [
             'id' => 3,
-            'nombre' => 'Dr. Andrés Torres',
-            'especialidad' => 'Odontología',
-            'horario' => 'Lunes a Sábado, 9:00 am - 1:00 pm',
-        ],
-        [
-            'id' => 4,
-            'nombre' => 'Dra. Marcela Rojas',
-            'especialidad' => 'Pediatría',
-            'horario' => 'Lunes, Miércoles y Viernes, 8:00 am - 11:00 am',
+            'nombre' => 'Carlos Andrés Ruiz',
+            'documento' => '1032145698',
+            'edad' => 52,
+            'ultima_cita' => '2026-09-24',
         ],
     ];
 
-    return view('buscar_especialista', ['especialistas' => $especialistas]);
+    return view('pacientes_medico', ['pacientes' => $pacientes]);
 });
 
-Route::get('/historia_clinica_paciente', function () {
+Route::get('/historia_clinica_medico', function () {
 
     $historial = [
         [
             'id' => 1,
+            'paciente' => 'Juan Pérez',
             'fecha' => '2026-08-14',
-            'especialista' => 'Dr. Carlos Ramírez',
-            'especialidad' => 'Cardiología',
             'diagnostico' => 'Hipertensión arterial leve',
             'tratamiento' => 'Control de presión mensual y dieta baja en sodio',
         ],
         [
             'id' => 2,
+            'paciente' => 'María Fernanda López',
             'fecha' => '2026-06-02',
-            'especialista' => 'Dra. Laura Gómez',
-            'especialidad' => 'Dermatología',
             'diagnostico' => 'Dermatitis atópica',
             'tratamiento' => 'Crema tópica con corticoide por 10 días',
         ],
         [
             'id' => 3,
+            'paciente' => 'Carlos Andrés Ruiz',
             'fecha' => '2026-03-20',
-            'especialista' => 'Dr. Andrés Torres',
-            'especialidad' => 'Odontología',
-            'diagnostico' => 'Caries dental leve',
-            'tratamiento' => 'Resina en pieza dental #14',
+            'diagnostico' => 'Chequeo general sin hallazgos relevantes',
+            'tratamiento' => 'Control anual de rutina',
         ],
     ];
 
-    return view('historia_clinica_paciente', ['historial' => $historial]);
+    return view('historia_clinica_medico', ['historial' => $historial]);
 });
 
-Route::get('/perfil_paciente', function () {
-
-    $paciente = [
-        'nombre' => 'María Alejandra Urcuqui',
-        'tipo_documento' => 'Cédula de ciudadanía',
-        'numero_documento' => '1094567890',
-        'correo' => 'maria.urcuqui@example.com',
-        'celular' => '3001234567',
-        'fecha_nacimiento' => '2001-05-14',
-        'genero' => 'Femenino',
-        'direccion' => 'Calle 45 #12-30, Cali',
-    ];
-
-    return view('perfil_paciente', ['paciente' => $paciente]);
-});
-
-Route::get('/configuracion_paciente', function () {
+Route::get('/configuracion_medico', function () {
 
     $preferencias = [
         'notificaciones_email' => true,
@@ -147,7 +131,11 @@ Route::get('/configuracion_paciente', function () {
         'recordatorio_citas' => true,
     ];
 
-    return view('configuracion_paciente', ['preferencias' => $preferencias]);
+    return view('configuracion_medico', ['preferencias' => $preferencias]);
+});
+
+Route::get('/dashboard_paciente', function () {
+    return view('dashboard_paciente');
 });
 
 Route::get('/citas', function () {
